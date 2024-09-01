@@ -15,7 +15,7 @@ This library provides a simple implementation of a WHEP (WebRTC HTTP Egress Prot
 ## Installation
 
 ```bash
-npm install whep-client-library
+npm install whep-client
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ npm install whep-client-library
 Here's a basic example of how to use the WHEPClient:
 
 ```typescript
-import WHEPClient from 'whep-client-library';
+import WHEPClient from './libs/WHEPClient';
 
 const videoElement = document.getElementById('videoPlayer') as HTMLVideoElement;
 const endpoint = 'https://your-whep-server-endpoint.com';
