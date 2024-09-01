@@ -1,0 +1,14 @@
+{
+  "name": "whep-client",
+  "version": "1.0.0",
+  "main": "dist/WHEPClient.js",
+  "types": "dist/WHEPClient.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
