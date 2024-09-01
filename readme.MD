@@ -1,57 +1,65 @@
-# WHEP Client
+WHEP Client Library
+Overview
+This library provides a simple implementation of a WHEP (WebRTC HTTP Egress Protocol) client for playback of video over WebRTC. It's designed to make it easy to integrate WebRTC-based video playback into your web applications.
+Features
 
-WHEP Client is a library for playing back video over WebRTC using the WHEP protocol. This library handles the SDP exchange and ICE gathering process to establish a WebRTC connection.
+Easy-to-use WHEP client implementation
+Supports video and audio playback
+Automatic handling of WebRTC connection setup
+Configurable TURN server support
+Reconnection capability
 
-## Installation
-
-You can install the library using npm:
-
-```sh
-npm install whep-client
-
+Installation
+bashCopynpm install whep-client-library
 Usage
-Here is an example of how to use the WHEPClient class to establish a WebRTC connection:
-import WHEPClient from 'whep-client';
+Here's a basic example of how to use the WHEPClient:
+typescriptCopyimport WHEPClient from 'whep-client-library';
 
-async function startPlayback() {
-  const peerConnection = new RTCPeerConnection();
-  const endpoint = 'https://your-server-endpoint.com';
-  const turnServerConfig = {
-    urls: 'turn:your-turn-server.com',
-    username: 'your-username',
-    credential: 'your-credential',
-  };
+const videoElement = document.getElementById('videoPlayer') as HTMLVideoElement;
+const endpoint = 'https://your-whep-server-endpoint.com';
+const turnServerConfig = {
+  urls: 'turn:your-turn-server.com:3478',
+  username: 'username',
+  credential: 'password'
+};
 
-  const client = new WHEPClient(peerConnection, turnServerConfig);
+const client = new WHEPClient(endpoint, videoElement, turnServerConfig);
 
-  try {
-    await client.negotiateConnectionWithClientOffer(endpoint);
-    console.log('Connection established');
-  } catch (error) {
-    console.error('Failed to establish connection', error);
-  }
-}
+// Set up the connection
+client.setupConnection()
+  .then(() => {
+    console.log('WHEP client connected successfully');
+  })
+  .catch((error) => {
+    console.error('Failed to connect WHEP client:', error);
+  });
 
-startPlayback();
+// To close the connection
+// client.closeConnection();
 
-API
+// To reconnect
+// client.reconnect();
+API Reference
 WHEPClient
 Constructor
-new WHEPClient(peerConnection: RTCPeerConnection, turnServerConfig: TurnServerConfig)
+typescriptCopyconstructor(endpoint: string, videoElement: HTMLVideoElement, turnServerConfig: TurnServerConfig)
 
-peerConnection: An instance of RTCPeerConnection.
-turnServerConfig: An object containing TURN server configuration.
+endpoint: The WHEP server endpoint URL
+videoElement: The HTML video element to display the stream
+turnServerConfig: Configuration for the TURN server
 
 Methods
-negotiateConnectionWithClientOffer(endpoint: string): Promise<void>
-Performs the SDP exchange to establish a WebRTC connection.
 
-endpoint: The server endpoint to send the SDP offer to.
-Development
-To build the project, run:
-npm run build
+setupConnection(): Promise<void>: Establishes the WebRTC connection
+closeConnection(): void: Closes the WebRTC connection and cleans up resources
+reconnect(): Promise<void>: Closes the current connection and establishes a new one
+getIsConnected(): boolean: Returns the current connection status
+setIsConnected(isConnected: boolean): void: Sets the connection status
+getTurnServerConfig(): TurnServerConfig: Returns the current TURN server configuration
 
+Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
 License
-This project is licensed under the ISC License.
-
-```
+[Specify your license here]
+Contact
+[Your contact information or link to issues page]
