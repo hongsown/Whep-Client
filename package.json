@@ -1,14 +1,22 @@
 {
   "name": "whep-client",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "dist/WHEPClient.js",
   "types": "dist/WHEPClient.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hongsown/Whep-Client"
+  },
+  "keywords": [
+    "webrtc",
+    "whep",
+    "stream"
+  ],
+  "author": "Hong Son",
   "license": "ISC",
   "description": ""
 }
