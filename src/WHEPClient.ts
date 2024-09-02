@@ -126,10 +126,10 @@ export default class WHEPClient {
   }
 
   async reconnect() {
-    console.log('Đang kết nối lại...');
+    console.log('Connecting...');
     this.closeConnection();
     await this.setupConnection();
-    console.log('Đã kết nối lại thành công.');
+    console.log('Connected.');
   }
 
   public getIsConnected(): boolean {
