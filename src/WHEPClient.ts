@@ -12,13 +12,16 @@ export default class WHEPClient {
   private isConnected = false;
   private abortController = new AbortController();
   private turnServerConfig: TurnServerConfig;
+  private timeRequest?: number;
   constructor(
     private endpoint: string,
     private videoElement: HTMLVideoElement,
     turnServerConfig: TurnServerConfig,
+    timeRequest: number = 3000,
   ) {
     this.stream = new MediaStream();
     this.turnServerConfig = turnServerConfig;
+    this.timeRequest = timeRequest;
 
     /**
      * Create a new WebRTC connection, using public STUN servers with ICE,
@@ -90,6 +93,7 @@ export default class WHEPClient {
         this.endpoint,
         this,
         this.abortController,
+        this.timeRequest
       );
     });
   }
@@ -104,6 +108,7 @@ export default class WHEPClient {
       this.endpoint,
       this,
       this.abortController,
+      this.timeRequest,
     );
     this.isConnected = true;
     console.log('Connected.');

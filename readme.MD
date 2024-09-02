@@ -11,7 +11,7 @@ This library provides a simple implementation of a WHEP (WebRTC HTTP Egress Prot
 - Automatic handling of WebRTC connection setup
 - Configurable TURN server support
 - Reconnection capability
-
+- Automatic retry on connection errors
 ## Installation
 
 ```bash
@@ -23,7 +23,7 @@ npm install whep-client
 Here's a basic example of how to use the WHEPClient:
 
 ```typescript
-import WHEPClient from './libs/WHEPClient';
+import WHEPClient from 'whep-client';
 
 const videoElement = document.getElementById('videoPlayer') as HTMLVideoElement;
 const endpoint = 'https://your-whep-server-endpoint.com';
@@ -34,6 +34,9 @@ const turnServerConfig = {
 };
 
 const client = new WHEPClient(endpoint, videoElement, turnServerConfig);
+
+// Optional timeRequest parameter set to 5 seconds
+const client = new WHEPClient(endpoint, videoElement, turnServerConfig, 5000);
 
 // Set up the connection
 client.setupConnection()
@@ -58,12 +61,13 @@ client.setupConnection()
 #### Constructor
 
 ```typescript
-constructor(endpoint: string, videoElement: HTMLVideoElement, turnServerConfig: TurnServerConfig)
+constructor(endpoint: string, videoElement: HTMLVideoElement, turnServerConfig: TurnServerConfig, timeRequest?: number)
 ```
 
 - `endpoint`: The WHEP server endpoint URL
 - `videoElement`: The HTML video element to display the stream
 - `turnServerConfig`: Configuration for the TURN server
+- `timeRequest`(optional): The interval in seconds to retry the connection if an error occurs. Default is 3000ms (3 seconds).
 
 #### Methods
 
@@ -75,6 +79,8 @@ constructor(endpoint: string, videoElement: HTMLVideoElement, turnServerConfig: 
 | `getIsConnected(): boolean` | Returns the current connection status |
 | `setIsConnected(isConnected: boolean): void` | Sets the connection status |
 | `getTurnServerConfig(): TurnServerConfig` | Returns the current TURN server configuration |
+
+
 
 ## Contributing
 

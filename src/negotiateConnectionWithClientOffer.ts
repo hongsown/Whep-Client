@@ -17,6 +17,7 @@ export default async function negotiateConnectionWithClientOffer(
   endpoint: string,
   client: WHEPClient,
   abortController: AbortController,
+  timeRequest: number,
 ) {
   /** https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer */
   const offer = await peerConnection.createOffer();
@@ -25,7 +26,7 @@ export default async function negotiateConnectionWithClientOffer(
   await peerConnection.setLocalDescription(offer);
 
   /** Wait for ICE gathering to complete */
-  const ofr = await waitToCompleteICEGathering(peerConnection);
+  const ofr = await waitToCompleteICEGathering(peerConnection, timeRequest);
   if (!ofr) {
     throw Error('failed to gather ICE candidates for offer');
   }
@@ -62,7 +63,7 @@ export default async function negotiateConnectionWithClientOffer(
     }
 
     /** Limit reconnection attempts to at-most once every 5 seconds */
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, timeRequest));
   }
 }
 
@@ -90,12 +91,12 @@ async function postSDPOffer(
  * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceGatheringState
  * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/icegatheringstatechange_event
  */
-async function waitToCompleteICEGathering(peerConnection: RTCPeerConnection) {
+async function waitToCompleteICEGathering(peerConnection: RTCPeerConnection, timeRequest: number) {
   return new Promise<RTCSessionDescription | null>((resolve) => {
     /** Wait at most 1 second for ICE gathering. */
     setTimeout(function () {
       resolve(peerConnection.localDescription);
-    }, 1000);
+    }, timeRequest);
     peerConnection.onicegatheringstatechange = (ev) =>
       peerConnection.iceGatheringState === 'complete' &&
       resolve(peerConnection.localDescription);
